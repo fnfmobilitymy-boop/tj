@@ -39,3 +39,9 @@ Brand emblem provenance: `assets/brands/SOURCE.txt`. Social icon licence: `asset
 ## GitHub Pages
 
 The workflow `.github/workflows/pages.yml` builds and deploys `_site` on pushes to `main`, or via Run workflow. Pages is configured to use GitHub Actions. Website: https://fnfmobilitymy-boop.github.io/tj/.
+
+## Demo travel content
+
+The primary navigation has seven items: Kuching car rental, Kuching holiday packages, private charter, blog, Sabah car rental, Sabah private charter and Sabah holiday packages. My Order is a header utility; terms remain in the footer.
+
+The Demo includes six original sample itineraries and six destination descriptions, plus AI-generated illustrative destination visuals in `assets/borneo-demo-destinations.png`. These are visibly marked as Demo illustrations and are not photographs of confirmed tours. Detailed routes, attraction access, wildlife sightings, accommodation, tickets and partner arrangements are not guaranteed. Requests are quotations only. The fixed WhatsApp entry links to TJ's verified public number.
