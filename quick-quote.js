@@ -19,7 +19,7 @@
  if(I.language==='zh')text=`您好 TJ，我想询价：\n车型：${model?.name||'请帮我推荐'}\n取车日期：${date.value}\n租用天数：${n}\n${model?'Demo 租金参考：RM '+(model.price*n).toLocaleString()+'\n':''}请确认车辆、完整报价及条款。`;
  else if(I.language==='ms')text=`Helo TJ, saya ingin mendapatkan sebut harga:\nKenderaan: ${model?.name||'Bantu saya memilih'}\nTarikh ambil: ${date.value}\nHari sewaan: ${n}\n${model?'Anggaran demo: RM '+(model.price*n).toLocaleString()+'\n':''}Sila sahkan ketersediaan, sebut harga lengkap dan terma.`;
  else text=`Hello TJ, I would like a quote:\nVehicle: ${model?.name||'Please help me choose'}\nPick-up date: ${date.value}\nRental days: ${n}\n${model?'Demo rental estimate: RM '+(model.price*n).toLocaleString()+'\n':''}Please confirm availability, the complete quotation and terms.`;
- window.open('https://wa.me/60168689517?text='+encodeURIComponent(text),'_blank','noopener');
+ window.open('https://wa.me/60123456789?text='+encodeURIComponent(text),'_blank','noopener');
  };
  function autoShow(){if(!location.hash&&!moved)showTimer=setTimeout(()=>{if(!moved)show();},250);}
  const intro=document.getElementById('brandIntro');if(intro){const watch=new MutationObserver(()=>{if(!intro.isConnected){watch.disconnect();autoShow();}});watch.observe(document.body,{childList:true});}else autoShow();

@@ -1,5 +1,6 @@
 // Bahasa Melayu copy for the demo site.
 window.TJMalay = {
+  "Back to top":"Kembali ke atas",
   "Home":"Laman utama",
   "English":"Bahasa Inggeris",
   "Chinese":"Bahasa Cina",
@@ -58,7 +59,6 @@ window.TJMalay = {
   "Bring your favourite people.": "Bawa insan kegemaran anda.",
   "Built for bigger adventures.": "Dibina untuk pengembaraan lebih besar.",
   "Business & occasions": "Perniagaan & acara",
-  "CALL TOMASZ": "HUBUNGI TOMASZ",
   "Car Rental Rates": "Kadar Sewa Kereta",
   "Car rental enquiry": "Pertanyaan sewa kereta",
   "Change, cancellation, refund and no-show policies are provided with the quotation. Do not assume a free cancellation or a particular refund period.": "Polisi perubahan, pembatalan, bayaran balik dan ketidakhadiran diberikan bersama sebut harga. Jangan anggap pembatalan percuma atau tempoh bayaran balik tertentu.",
@@ -156,7 +156,6 @@ window.TJMalay = {
   "Kuala Lumpur · KLIA": "Kuala Lumpur · KLIA",
   "Kuching Car Rental": "Sewa Kereta Kuching",
   "Kuching Holiday Packages": "Pakej Percutian Kuching",
-  "Kuching International Airport, 93722 Kuching, Sarawak": "Lapangan Terbang Antarabangsa Kuching, 93722 Kuching, Sarawak",
   "Kuching Waterfront": "Tebingan Kuching",
   "Kuching highlights, three days your way.": "Sorotan Kuching, tiga hari mengikut cara anda.",
   "Kuching holiday enquiry": "Pertanyaan percutian Kuching",
@@ -176,7 +175,6 @@ window.TJMalay = {
   "Let’s talk": "Hubungi kami",
   "Local people. Thoughtful plans. A drive that feels like you.": "Orang tempatan. Rancangan teliti. Pemanduan mengikut jiwa anda.",
   "Locally rooted. Open-road minded.": "Berakar tempatan. Berfikiran terbuka.",
-  "Lot L1 · Domestic Arrival Hall · Gate 1": "Lot L1 · Balai Ketibaan Domestik · Pintu 1",
   "Luggage, child seats, accessibility or itinerary preferences": "Bagasi, kerusi kanak-kanak, keperluan akses atau pilihan itinerari",
   "MORE ROADS. MORE POSSIBILITIES.": "LEBIH BANYAK LALUAN. LEBIH BANYAK PELUANG.",
   "MORE THAN A RENTAL": "LEBIH DARIPADA SEWAAN",
@@ -311,7 +309,6 @@ window.TJMalay = {
   "THE DRIVE": "PEMANDUAN",
   "THE LOCAL NOTEBOOK": "CATATAN TEMPATAN",
   "THE RIGHT CAR FOR EVERY PLAN": "KENDERAAN TEPAT UNTUK SETIAP RANCANGAN",
-  "TJ’s official contact address is Lot L1, Domestic Arrival Hall, Gate 1, Kuching International Airport. Confirm the exact meeting point with the team before you arrive.": "Alamat hubungan rasmi TJ ialah Lot L1, Balai Ketibaan Domestik, Pintu 1, Lapangan Terbang Antarabangsa Kuching. Sahkan tempat bertemu yang tepat sebelum tiba.",
   "TRANSMISSION": "TRANSMISI",
   "TRAVEL GUIDE": "PANDUAN PERJALANAN",
   "Tailored quotation": "Sebut harga tersuai",
@@ -390,4 +387,11 @@ window.TJMalay = {
 
 Object.assign(window.TJMalay,{
  "Quick quote":"Sebut harga pantas","QUICK QUOTE":"SEBUT HARGA PANTAS","A great drive starts with a simple plan.":"Perjalanan hebat bermula dengan rancangan mudah.","CHOOSE YOUR VEHICLE":"PILIH KENDERAAN ANDA","Help me choose":"Bantu saya memilih","RENTAL DAYS":"HARI SEWAAN","DEMO ESTIMATE":"ANGGARAN DEMO","Pick a vehicle to see an estimate":"Pilih kenderaan untuk melihat anggaran","Enter 1–30 whole days":"Masukkan 1–30 hari penuh","Please choose a valid date and rental duration.":"Pilih tarikh dan tempoh sewaan yang sah.","Example rental estimate only. Availability, deposit, insurance and final charges require TJ confirmation.":"Anggaran sewaan contoh sahaja. Ketersediaan, deposit, insurans dan caj akhir perlu disahkan oleh TJ.","Get my quote on WhatsApp":"Dapatkan sebut harga di WhatsApp","No payment here. Send your message in WhatsApp to contact TJ.":"Tiada bayaran di sini. Hantar mesej anda di WhatsApp untuk menghubungi TJ.","Close quick quote":"Tutup sebut harga pantas","SCROLL TO CONTINUE":"TATAL UNTUK MENERUSKAN","Enquire with TJ":"Tanya TJ"
+});
+
+Object.assign(window.TJMalay,{
+ "CALL US":"HUBUNGI KAMI",
+ "Get in touch to plan your journey.":"Hubungi kami untuk merancang perjalanan anda.",
+ "Confirm your exact pick-up point and flight details with the team before you arrive.":"Sahkan tempat pengambilan yang tepat dan butiran penerbangan dengan pasukan sebelum tiba.",
+ "TJ location":"Lokasi TJ"
 });

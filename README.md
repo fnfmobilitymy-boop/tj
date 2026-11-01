@@ -22,7 +22,7 @@ Development server: port 3000 (`PORT` overrides it). The build produces `_site` 
 - 27-brand, 130-model sample catalogue with brand URLs, search, type/budget/seats filtering and sorting.
 - Kuching trip enquiry ideas, chauffeur enquiries, Sabah rental enquiries, original travel guides and booking information.
 - Enquiry form, editable review, browser-local drafts, delete confirmation, WhatsApp/email handoff, and My Order.
-- TJ's verified public phone/email/address, Google Maps search link and embed.
+- User-configured Demo phone/email/address, Google Maps search link and embed.
 - Facebook, TikTok, Instagram and YouTube icons only; profile links have not been supplied.
 - Reduced-motion alternatives and pause controls. Video and particle rendering stop when offscreen or hidden.
 
@@ -32,7 +32,7 @@ This is an enquiry website, not a live reservation or payment backend. The brows
 
 Vehicle entries and rental prices in `fleet-data.js` are examples, not proof of available rental stock. Every model has an AI-generated Demo vehicle illustration; these are not photographs of the operator’s inventory. Kuching itineraries are original suggested ideas, not copied or confirmed commercial tours. Sabah is an enquiry destination, not a confirmed operating location. Booking information does not invent deposit or cancellation rules.
 
-Contact information was read from https://www.tjkuchingcarrental.com/: +60168689517 (Tomasz), tjkuchingcarrental@gmail.com, Lot L1, Domestic Arrival Hall, Gate 1, Kuching International Airport, 93722 Kuching, Sarawak. The official website lists daily hours of 8:30 am–10 pm. The reference navigation informed feature categories only; no competitor contacts or package prices are used.
+Current contact details are user-provided Demo placeholders: 0123456789 (WhatsApp URL uses 60123456789), abc@rent.com, No. 123, Jalan ABC. Google Maps uses a text search for that address; it is not a verified location. Earlier official contact details have been replaced. The reference navigation informed feature categories only; no competitor contacts or package prices are used.
 
 Brand emblem provenance: `assets/brands/SOURCE.txt`. Social icon licence: `assets/social/LICENSE.txt`. Local video assets came from the user's uploads. The requested Horizon Drift typeface has not been embedded because no font file has been supplied.
 
@@ -44,7 +44,7 @@ The workflow `.github/workflows/pages.yml` builds and deploys `_site` on pushes 
 
 The primary navigation has seven items: Kuching car rental, Kuching holiday packages, private charter, blog, Sabah car rental, Sabah private charter and Sabah holiday packages. My Order is a header utility; terms remain in the footer.
 
-The Demo includes six original sample itineraries and six destination descriptions, plus AI-generated illustrative destination visuals in `assets/borneo-demo-destinations.png`. These are visibly marked as Demo illustrations and are not photographs of confirmed tours. Detailed routes, attraction access, wildlife sightings, accommodation, tickets and partner arrangements are not guaranteed. Requests are quotations only. The fixed WhatsApp entry links to TJ's verified public number.
+The Demo includes six original sample itineraries and six destination descriptions, plus AI-generated illustrative destination visuals in `assets/borneo-demo-destinations.png`. These are visibly marked as Demo illustrations and are not photographs of confirmed tours. Detailed routes, attraction access, wildlife sightings, accommodation, tickets and partner arrangements are not guaranteed. Requests are quotations only. The fixed WhatsApp entry links to the configured Demo number.
 
 ## Seating and language additions
 
@@ -72,3 +72,7 @@ The panel offers all Demo models, pick-up date and 1–30 rental days, calculate
 `index.html` remains the Kuching rental homepage. `my-order.html` and `terms.html` provide shared account-free request drafts and booking information. Each service page renders only its relevant content plus TJ contact details, with shared three-language navigation, footer and floating WhatsApp. The homepage no longer contains all service sections.
 
 Language preference and enquiry drafts persist across pages in same-origin localStorage. Forms work without homepage DOM elements; package enquiries can be reviewed, edited and sent via WhatsApp/email, with My Order accessible as a separate page. Old homepage service hash links redirect to the relevant document. Development startup runs the build; the local server serves generated pages and hashed scripts from `_site` when there is no source file at that URL.
+
+## Floating tools
+
+WhatsApp and Back to top share a floating dock on all pages. The footer reserves a separate right-hand tool lane so social icons and links remain clear without pushing controls over the map. Back to top appears after scrolling or at the end of short pages, supports reduced motion, and returns keyboard focus to the site logo.

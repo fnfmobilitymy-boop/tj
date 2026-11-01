@@ -5,7 +5,7 @@ await rm('_site',{recursive:true,force:true});
 await mkdir('_site',{recursive:true});
 const documents=createPages(await readFile('index.html','utf8'));
 const versions=new Map();
-for(const file of ['style.css','app.js','fleet-data.js','ms.js','i18n.js','services.js','particles.js','carousel.js','navigation.js','quick-quote.js']){
+for(const file of ['style.css','app.js','fleet-data.js','ms.js','i18n.js','services.js','particles.js','carousel.js','navigation.js','quick-quote.js','floating-actions.js']){
  const bytes=await readFile(file);
  const hash=createHash('sha256').update(bytes).digest('hex').slice(0,12);
  const name=file.replace(/(\.[^.]+)$/,`.${hash}$1`);
