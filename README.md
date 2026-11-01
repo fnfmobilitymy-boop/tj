@@ -16,10 +16,10 @@ Development server: port 3000 (`PORT` overrides it). The build produces `_site` 
 
 ## Features
 
-- Bilingual English / Simplified Chinese interface, with browser-saved language preference.
+- Bilingual English / Simplified Chinese / Bahasa Melayu interface, with browser-saved language preference.
 - Opening logo animation, two-video hero carousel, reversible pinned hero transition, and gold/blue Canvas particle morphing between TJ mark, a car silhouette and a sphere.
 - Opposing brand reels with hover pause, mouse drag, keyboard navigation, explicit pause and an expandable grid.
-- 27-brand, 118-model sample catalogue with brand URLs, search, type/budget/seats filtering and sorting.
+- 27-brand, 130-model sample catalogue with brand URLs, search, type/budget/seats filtering and sorting.
 - Kuching trip enquiry ideas, chauffeur enquiries, Sabah rental enquiries, original travel guides and booking information.
 - Enquiry form, editable review, browser-local drafts, delete confirmation, WhatsApp/email handoff, and My Order.
 - TJ's verified public phone/email/address, Google Maps search link and embed.
@@ -30,7 +30,7 @@ Development server: port 3000 (`PORT` overrides it). The build produces `_site` 
 
 This is an enquiry website, not a live reservation or payment backend. The browser stores drafts under `tj-requests`. Users must explicitly send the prepared WhatsApp message or email; the site cannot verify sending or confirmation. No payment is collected. Final availability, service coverage, prices and terms must be confirmed by TJ.
 
-Vehicle entries and rental prices in `fleet-data.js` are examples, not proof of available rental stock. Vehicle photography is pending; manufacturer emblems identify sample models. Kuching itineraries are original suggested ideas, not copied or confirmed commercial tours. Sabah is an enquiry destination, not a confirmed operating location. Booking information does not invent deposit or cancellation rules.
+Vehicle entries and rental prices in `fleet-data.js` are examples, not proof of available rental stock. Every model has an AI-generated Demo vehicle illustration; these are not photographs of the operator’s inventory. Kuching itineraries are original suggested ideas, not copied or confirmed commercial tours. Sabah is an enquiry destination, not a confirmed operating location. Booking information does not invent deposit or cancellation rules.
 
 Contact information was read from https://www.tjkuchingcarrental.com/: +60168689517 (Tomasz), tjkuchingcarrental@gmail.com, Lot L1, Domestic Arrival Hall, Gate 1, Kuching International Airport, 93722 Kuching, Sarawak. The official website lists daily hours of 8:30 am–10 pm. The reference navigation informed feature categories only; no competitor contacts or package prices are used.
 
@@ -45,3 +45,15 @@ The workflow `.github/workflows/pages.yml` builds and deploys `_site` on pushes 
 The primary navigation has seven items: Kuching car rental, Kuching holiday packages, private charter, blog, Sabah car rental, Sabah private charter and Sabah holiday packages. My Order is a header utility; terms remain in the footer.
 
 The Demo includes six original sample itineraries and six destination descriptions, plus AI-generated illustrative destination visuals in `assets/borneo-demo-destinations.png`. These are visibly marked as Demo illustrations and are not photographs of confirmed tours. Detailed routes, attraction access, wildlife sightings, accommodation, tickets and partner arrangements are not guaranteed. Requests are quotations only. The fixed WhatsApp entry links to TJ's verified public number.
+
+## Seating and language additions
+
+Exact-capacity filters cover 5, 6, 7, 8, 9 and 10 seats, 16-seat vans, and buses/coaches. The Demo catalogue includes 130 entries, including example seating variants, 16-seat Toyota Hiace/Nissan Urvan/Ford Transit entries, a 22-seat Coaster and a 44-seat coach. Seat counts include the driver and must be verified with TJ; images cannot establish internal seating layouts.
+
+All vehicle card visuals are AI-generated illustrations, grouped in nine 4×4 image sheets under `assets/vehicles/`. They are labelled as Demo visuals. English, Chinese and Bahasa Melayu have local flag icons; translations are bundled locally in `i18n.js` and `ms.js`, including the Malay WhatsApp request message. Flag icon licence: `assets/flags/LICENSE.txt`.
+
+## Entry quick-quote panel
+
+After the opening logo animation, `quick-quote.js` drops a non-modal quote panel from the top on a normal homepage entry. Moving the page more than 20 px dismisses it; close and Escape work too. The hero's Quick quote button reopens it. Direct links to page sections and visitors who already scroll before the panel opens are not interrupted.
+
+The panel offers all Demo models, pick-up date and 1–30 rental days, calculates a clearly labelled example rental amount, and opens a prepared WhatsApp enquiry only on user submission. It does not send a message automatically or confirm a reservation. English, Chinese and Malay are supported, with reduced-motion styling.
