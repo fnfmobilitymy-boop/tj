@@ -29,3 +29,24 @@
 @keyframes intro-exit{to{opacity:0;visibility:hidden;pointer-events:none}}
 @media(max-width:700px){.intro-center{width:90vw}.intro-tagline{font-size:8px;letter-spacing:.26em;margin:20px 0 25px}}
 @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}.brand-intro{display:none}.brand-intro *{animation:none!important}.car,.car-image img{transition:none}}
+
+/* Scroll choreography and quiet, responsive interaction feedback. */
+.scroll-progress{position:fixed;top:0;left:0;right:0;height:2px;z-index:1001;transform:scaleX(0);transform-origin:left;background:linear-gradient(90deg,#8e7141,#f4dbab);pointer-events:none}
+.motion-reveal{opacity:0;translate:0 25px;transition:opacity .65s ease var(--reveal-delay,0ms),translate .65s cubic-bezier(.2,.7,.2,1) var(--reveal-delay,0ms)}
+.motion-reveal.is-visible{opacity:1;translate:0 0}
+.motion-reveal:focus-within{opacity:1;translate:0 0;transition-delay:0ms}
+.primary,.tabs button,.book,.contact,.intro-skip{transition:background .2s,border-color .2s,color .2s,box-shadow .2s,transform .2s}
+.primary:hover{box-shadow:0 6px 25px #dfbd7720;transform:translateY(-2px)}
+.primary:active,.tabs button:active,.book:active,.contact:active{transform:scale(.97)}
+.nav nav a:before{content:'';position:absolute;bottom:0;left:0;width:100%;height:1px;background:var(--lime);transform:scaleX(0);transform-origin:left;transition:transform .25s}
+.nav nav a:hover:before{transform:scaleX(1)}
+.hero-art img{transition:transform .15s linear;transform-origin:center}
+.car{position:relative;isolation:isolate}.car:after{content:'';position:absolute;inset:0;border-radius:inherit;z-index:-1;background:radial-gradient(230px circle at var(--pointer-x,50%) var(--pointer-y,0%),#dfbd7712,transparent 75%);opacity:0;transition:opacity .3s;pointer-events:none}.car:hover:after{opacity:1}
+.car .book:hover{box-shadow:0 3px 18px #dfbd7718}
+.bottom-banner>a span,.contact span{display:inline-block;transition:transform .25s}.bottom-banner>a:hover span,.contact:hover span{transform:translate(3px,-3px)}
+.help-card{transition:border-color .25s,transform .25s}.help-card:hover{border-color:#b5965c;transform:translateY(-3px)}
+dialog[open]{animation:dialog-enter .25s cubic-bezier(.2,.7,.2,1)}dialog[open]::backdrop{animation:backdrop-enter .2s ease}
+@keyframes dialog-enter{from{opacity:0;transform:translateY(15px) scale(.98)}to{opacity:1;transform:translateY(0) scale(1)}}
+@keyframes backdrop-enter{from{opacity:0}to{opacity:1}}
+@media(hover:none){.car:hover,.primary:hover,.help-card:hover{transform:none}.car:hover img{transform:none}.car:after{display:none}}
+@media(prefers-reduced-motion:reduce){.motion-reveal{opacity:1;translate:none;transition:none}.scroll-progress{display:none}.hero-art img{transform:none!important}.primary,.tabs button,.book,.contact,.intro-skip,.help-card,.bottom-banner>a span,.contact span,.nav nav a:before{transition:none}dialog[open],dialog[open]::backdrop{animation:none}.primary:hover,.help-card:hover{transform:none}}

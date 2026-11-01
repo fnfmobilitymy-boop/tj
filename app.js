@@ -36,3 +36,46 @@ function openModal(content){$('#modalContent').innerHTML=content;modal.showModal
 $('#cars').onclick=e=>{const b=e.target.closest('[data-car]');if(!b)return;selected=cars.find(c=>c.id===b.dataset.car);openModal(`<div class="eyebrow">YOUR NEXT CHAPTER</div><h2>${selected.name}</h2><p>${selected.seats} seats · Automatic · ${selected.category}</p><div class="summary">${$('#location').value}<br>${$('#pickup').value} → ${$('#return').value}<br>${days()} days × RM ${selected.price}<br><strong>Estimated rental: RM ${(days()*selected.price).toLocaleString()}</strong></div><p class="notice">Demo booking: this saves a request on this device only. Availability, insurance, deposit and final charges require confirmation by the rental team. No payment is collected. Vehicle photos are illustrative.</p><form id="reserve"><label>Your name<input name="name" autocomplete="name" required maxlength="80" placeholder="Full name"></label><label>Email address<input name="email" type="email" autocomplete="email" required placeholder="you@example.com"></label><label>Phone number<input name="phone" type="tel" autocomplete="tel" required minlength="8" placeholder="+60"></label><button class="primary">Save booking request ↗</button></form>`);$('#reserve').onsubmit=e=>{e.preventDefault();const data=Object.fromEntries(new FormData(e.target));const booking={...data,ref:'TJ-'+crypto.randomUUID().slice(0,8).toUpperCase(),car:selected.name,location:$('#location').value,pickup:$('#pickup').value,return:$('#return').value,total:days()*selected.price};try{const saved=JSON.parse(localStorage.getItem('fnf-bookings')||'[]');saved.push(booking);localStorage.setItem('fnf-bookings',JSON.stringify(saved));}catch{toast('Your browser could not save the request. Please enable local storage.');return;}openConfirmation(booking);};};
 function openConfirmation(b){$('#modalContent').innerHTML=`<div class="eyebrow">SAVED ON THIS DEVICE</div><h2>Your next drive is taking shape.</h2><p>Reference <strong>${b.ref}</strong></p><div class="summary"></div><p class="notice">This is a demo request, not a confirmed reservation. Your request has not been sent to a rental operator. You can find it under My bookings on this browser.</p><button class="primary" id="done" style="margin-top:20px;width:100%">Back to exploring ↗</button>`;$('.summary').textContent=`${b.car} · ${b.location} · ${b.pickup} → ${b.return} · Estimated RM ${b.total.toLocaleString()}`;$('#done').onclick=()=>modal.close();}
 $('#bookingLookup').onclick=()=>{let bookings=[];try{bookings=JSON.parse(localStorage.getItem('fnf-bookings')||'[]');}catch{}openModal('<div class="eyebrow">YOUR JOURNEYS</div><h2>My booking requests</h2><p>Demo requests saved in this browser. These are not confirmed reservations.</p><div id="savedBookings"></div>');if(!bookings.length){$('#savedBookings').innerHTML='<div class="summary">No requests yet. Your next adventure is waiting.</div>';return;}bookings.reverse().forEach(b=>{const div=document.createElement('div');div.className='summary';div.textContent=`${b.ref} · ${b.car} · ${b.pickup} → ${b.return} · RM ${b.total}`;$('#savedBookings').append(div);});};render();
+
+// Motion is progressive enhancement: content works without animation support.
+(() => {
+ const preference=window.matchMedia('(prefers-reduced-motion: reduce)');
+ const finePointer=window.matchMedia('(hover: hover) and (pointer: fine)');
+ const progress=document.createElement('div');
+ progress.className='scroll-progress';progress.setAttribute('aria-hidden','true');document.body.append(progress);
+ let observer;
+ if('IntersectionObserver' in window){
+  observer=new IntersectionObserver(entries=>entries.forEach(entry=>{
+   if(entry.isIntersecting){entry.target.classList.add('is-visible');observer.unobserve(entry.target);}
+  }),{threshold:0.08,rootMargin:'0px 0px -20px 0px'});
+ }
+ function reveal(root=document){
+  if(preference.matches||!observer)return;
+  root.querySelectorAll('.section-heading,.fleet-toolbar,.how>div,.bottom-banner,footer,.car').forEach((el,i)=>{
+   if(el.classList.contains('motion-reveal'))return;
+   el.style.setProperty('--reveal-delay',`${el.classList.contains('car')?i%3*65:0}ms`);
+   el.classList.add('motion-reveal');observer.observe(el);
+  });
+ }
+ reveal();new MutationObserver(()=>reveal($('#cars'))).observe($('#cars'),{childList:true});
+ let scheduled=false;
+ const heroImage=document.querySelector('.hero-art img');
+ function updateScroll(){
+  const max=document.documentElement.scrollHeight-innerHeight;
+  progress.style.transform=`scaleX(${max>0?Math.min(1,scrollY/max):0})`;
+  document.body.classList.toggle('has-scrolled',scrollY>30);
+  if(heroImage)heroImage.style.transform=!preference.matches&&finePointer.matches&&scrollY<650?`translateY(${Math.min(scrollY*.13,55)}px) scale(1.12)`:'none';
+  scheduled=false;
+ }
+ addEventListener('scroll',()=>{if(!scheduled){scheduled=true;requestAnimationFrame(updateScroll);}},{passive:true});
+ addEventListener('resize',updateScroll);updateScroll();
+ preference.addEventListener('change',()=>{
+  if(preference.matches){document.querySelectorAll('.motion-reveal').forEach(el=>el.classList.add('is-visible'));}
+  updateScroll();
+ });
+ document.addEventListener('pointermove',e=>{
+  if(preference.matches||!finePointer.matches)return;
+  const card=e.target.closest('.car');if(!card)return;
+  const box=card.getBoundingClientRect();card.style.setProperty('--pointer-x',`${e.clientX-box.left}px`);card.style.setProperty('--pointer-y',`${e.clientY-box.top}px`);
+ });
+})();
