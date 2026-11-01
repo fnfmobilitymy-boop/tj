@@ -395,3 +395,7 @@ Object.assign(window.TJMalay,{
  "Confirm your exact pick-up point and flight details with the team before you arrive.":"Sahkan tempat pengambilan yang tepat dan butiran penerbangan dengan pasukan sebelum tiba.",
  "TJ location":"Lokasi TJ"
 });
+
+Object.assign(window.TJMalay,{"← Previous":"← Sebelumnya","Next →":"Seterusnya →","Model page":"Halaman model"});
+
+Object.assign(window.TJMalay,{"Interactive map loads only when you need it.":"Peta interaktif dimuatkan hanya apabila anda memerlukannya.","Load map":"Muatkan peta"});

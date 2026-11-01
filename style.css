@@ -157,3 +157,33 @@ html[lang="ms"] .hero-scroll h1{font-size:clamp(48px,6.3vw,92px);line-height:1.1
 /* Reserve a footer tool lane instead of shifting tools over the map link. */
 footer>.social-block{padding-right:80px}footer>span:last-of-type{padding-right:55px}.footer-tools-visible .whatsapp-float-label{display:none}
 @media(max-width:700px){footer>.social-block{padding-right:80px}.social-block .social-links{gap:10px}footer>span:last-of-type{padding-right:0}}
+/* Fixed tools remain on one compositor layer and never trap transparent-area touches. */
+.floating-actions{transform:translateZ(0);contain:layout style;pointer-events:none}.floating-actions .whatsapp-float{pointer-events:auto;box-shadow:0 5px 17px #0005}.back-to-top{opacity:0;visibility:hidden;pointer-events:none;transform:translate3d(0,5px,0);transition:opacity .18s ease,transform .18s ease,visibility .18s,background .18s,border-color .18s}.back-to-top.is-visible{opacity:1;visibility:visible;pointer-events:auto;transform:translateZ(0)}.floating-actions .whatsapp-float:hover,.floating-actions .whatsapp-float:focus-visible,.back-to-top.is-visible:hover{transform:none}.whatsapp-float-label{will-change:opacity,transform}
+@media(prefers-reduced-motion:reduce){.back-to-top{transition:none}}
+.model-pagination{display:flex;justify-content:space-between;align-items:center;gap:15px;margin:25px 0 5px;padding-top:20px;border-top:1px solid #293b50}.model-pagination[hidden]{display:none}.model-pagination>button{background:#142131;border:1px solid #46536a;color:#ddc28a;border-radius:4px;padding:10px 13px;font-size:10px;cursor:pointer}.model-pagination>button:disabled{opacity:.35;cursor:default}.model-pagination>div{display:flex;align-items:center;gap:12px;color:#96a8be;font-size:10px}.model-pagination select{color-scheme:dark;border:1px solid #3b4d63;border-radius:4px;background:#111e2c;color:#dfc68f;padding:7px;font-size:10px}.vehicle-photo-sheet{will-change:auto}.car{contain:layout style}.particle-stage canvas{contain:strict}
+@media(max-width:700px){.model-pagination{gap:9px;flex-wrap:wrap}.model-pagination>div{order:-1;width:100%;justify-content:space-between;font-size:9px}.model-pagination>button{font-size:10px;flex:1}.back-to-top,.floating-actions .whatsapp-float{box-shadow:0 3px 12px #0005}}
+.hero-scroll .hero-film,.hero-scroll .hero-copy{will-change:auto}.hero-scroll .hero-scene.scene-in-view .hero-film{will-change:transform,clip-path}.hero-scroll .hero-scene.scene-in-view .hero-copy{will-change:transform,opacity}
+.map-placeholder{min-height:280px;flex:1;position:relative;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:15px;padding:30px;text-align:center;background:radial-gradient(ellipse at 50% 45%,#25415266,transparent 70%),#122131;overflow:hidden}.map-placeholder>.ui-icon{width:34px;height:34px;color:#dfbd77;stroke-width:1.1}.map-placeholder h3{font-size:15px;font-weight:500;color:#dbe5f0;z-index:1}.map-placeholder p{font-size:10px;line-height:1.8;color:#95a8bf;z-index:1}.map-placeholder>.outline-action{z-index:1}.map-grid-decoration{position:absolute;inset:0;opacity:.12;transform:rotate(-15deg) scale(1.5);background:repeating-linear-gradient(0deg,transparent 0 37px,#83a2b7 38px 39px),repeating-linear-gradient(90deg,transparent 0 53px,#83a2b7 54px 55px);pointer-events:none}
+@media(max-width:700px){.map-placeholder{min-height:260px;padding:24px}}
+
+/* Quiet presentation: retain animation controllers without visible utility chrome. */
+#skipIntro,#videoToggle,#pauseParticles,#brandMotionToggle{display:none!important}
+.quick-quote-panel.is-closing{pointer-events:none}
+.vehicle-model-image{display:block;width:100%;height:100%;object-fit:contain}
+.car:hover .vehicle-model-image{transform:none;filter:brightness(1.04)}
+@media(max-width:700px){
+ .quick-quote-panel{top:max(10px,env(safe-area-inset-top));padding:21px 20px 18px;max-height:calc(100svh - 24px)}
+ .quick-quote-panel h2{font-size:22px;line-height:1.25;margin-bottom:18px;max-width:310px}
+ .quick-quote-top{margin-bottom:15px}
+ .quick-quote-panel form{gap:12px}
+ .quick-quote-fields{grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:12px;align-items:start}
+ .quick-quote-fields label{min-width:0}
+ .quick-quote-panel input,.quick-quote-panel select{box-sizing:border-box;display:block;appearance:none;-webkit-appearance:none;height:46px;min-height:46px;max-height:46px;line-height:24px;font-size:16px;padding:10px;max-width:100%}
+ .quick-quote-panel input[type=date]::-webkit-date-and-time-value{text-align:left;min-height:24px}
+ .quick-quote-panel input[type=date]::-webkit-datetime-edit{padding:0}
+ .quick-quote-estimate{padding:12px}
+ .quick-quote-estimate strong{font-size:16px;line-height:1.35}
+ .quick-quote-disclaimer,.quick-quote-note{font-size:9px;line-height:1.5}
+ .quick-quote-submit{min-height:46px;padding:12px 8px}
+ .quick-quote-scroll{margin-top:12px}
+}

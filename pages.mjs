@@ -23,7 +23,7 @@ export function createPages(source){
       .replace('<body>','<body class="service-page-body">')
       .replace(/<div class="brand-intro"[\s\S]*?<\/noscript>/,'')
       .replace(/<main>[\s\S]*?<\/main>/,`<main class="service-page"><section id="travelServices" class="travel-services" data-page="${page.key}"></section></main>`)
-      .replace(/<script src="\.\/(?:app|particles|carousel|quick-quote)\.js"><\/script>/g,'');
+      .replace(/<script src="\.\/(?:app|fleet-data|particles|carousel|quick-quote)\.js"><\/script>/g,'');
     html=setActiveNavigation(html,page.file);
     if(page.key==='orders')html=html.replace('id="bookingLookup"','id="bookingLookup" aria-current="page"');
     pages[page.file]=html;

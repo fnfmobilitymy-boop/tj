@@ -12,7 +12,7 @@ for(const file of ['style.css','app.js','fleet-data.js','ms.js','i18n.js','servi
  await writeFile('_site/'+name,bytes);
  versions.set(file,name);
 }
-await cp('assets','_site/assets',{recursive:true});
+await cp('assets','_site/assets',{recursive:true,filter:source=>!(/vehicles\/fleet-\d+\.png$/.test(source)||source.endsWith('borneo-demo-destinations.png'))});
 for(const [file,source] of Object.entries(documents)){
  let html=source;
  for(const [original,version] of versions)html=html.replaceAll('./'+original,'./'+version);

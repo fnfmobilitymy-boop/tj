@@ -10,7 +10,7 @@
  let origin=scrollY,initialY=scrollY,moved=false,closing=0,showTimer=0;
  function estimate(){const model=models.find(c=>c.id===car.value),n=Number(days.value);total.textContent=!Number.isInteger(n)||n<1||n>30?t('Enter 1–30 whole days','请输入 1–30 个整天'):model?`RM ${(model.price*n).toLocaleString(I.language==='ms'?'ms-MY':I.language==='zh'?'zh-MY':'en-MY')}`:t('Pick a vehicle to see an estimate','选择车辆，查看参考估算');}
  function show(){clearTimeout(closing);panel.hidden=false;panel.classList.remove('is-closing');panel.classList.add('is-open');origin=scrollY;estimate();}
- function hide(restore=false){if(panel.hidden)return;panel.classList.add('is-closing');panel.classList.remove('is-open');clearTimeout(closing);closing=setTimeout(()=>{panel.hidden=true;panel.classList.remove('is-closing');if(restore)opener.focus({preventScroll:true});},220);}
+ function hide(restore=false){if(panel.hidden||panel.classList.contains('is-closing'))return;panel.classList.add('is-closing');panel.classList.remove('is-open');clearTimeout(closing);closing=setTimeout(()=>{panel.hidden=true;panel.classList.remove('is-closing');if(restore)opener.focus({preventScroll:true});},220);}
  opener.onclick=show;panel.querySelector('.quick-quote-close').onclick=()=>hide(true);
  addEventListener('scroll',()=>{if(Math.abs(scrollY-initialY)>20)moved=true;if(!panel.hidden&&Math.abs(scrollY-origin)>20)hide(false);},{passive:true});
  document.addEventListener('keydown',e=>{if(e.key==='Escape'&&!panel.hidden)hide(panel.contains(document.activeElement));});

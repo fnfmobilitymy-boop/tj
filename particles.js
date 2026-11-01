@@ -14,41 +14,75 @@
   const p=(i/n*9.73)%10,k=Math.floor(p),f=p-k;const a=outline[k],b=outline[k+1];
   return{x:a[0]+(b[0]-a[0])*f,y:a[1]+(b[1]-a[1])*f,z:((i*0.61803398875)%1-.5)*1.3};
  }
- function seed(logo=[]){const n=small.matches?850:2600;particles=Array.from({length:n},(_,i)=>{const v=(i+.5)/n,y=1-2*v,r=Math.sqrt(1-y*y),theta=i*2.39996323;const sphere={x:Math.cos(theta)*r*1.65,y:y*1.65,z:Math.sin(theta)*r*1.65};const fallback={x:Math.cos(theta)*(.3+v*1.7),y:Math.sin(theta)*(.3+v)*.7,z:Math.sin(i)*.15};const mark=logo.length?logo[i%logo.length]:fallback;return{logo:mark,car:carPoint(i,n),sphere,seed:i*12.9898,size:.55+(i%7)/7,color:i%5<2?'#d6b778':i%5===2?'#dce5eb':'#589ac2'};});}
- function resize(){const rect=canvas.getBoundingClientRect();width=rect.width;height=rect.height;const dpr=Math.min(devicePixelRatio||1,1.6);canvas.width=Math.round(width*dpr);canvas.height=Math.round(height*dpr);ctx.setTransform(dpr,0,0,dpr,0,0);draw();}
- function updateProgress(){const stage=section.querySelector('.particle-stage');const span=Math.max(1,section.offsetHeight-stage.offsetHeight);progress=reduced.matches?0:clamp(-section.getBoundingClientRect().top/span);copy();if(!frame)draw();}
+ let groups=[[],[],[]],ambient=[],logoPoints=[],geometry={top:0,span:1},dirty=true,lastDraw=0,resizeTimer=0;
+ const stage=section.querySelector('.particle-stage');
+ function seed(logo=logoPoints){
+  logoPoints=logo;const n=small.matches?700:2200;groups=[[],[],[]];
+  particles=Array.from({length:n},(_,i)=>{const v=(i+.5)/n,y=1-2*v,r=Math.sqrt(1-y*y),theta=i*2.39996323,seed=i*12.9898;
+   const sphere={x:Math.cos(theta)*r*1.65,y:y*1.65,z:Math.sin(theta)*r*1.65};
+   const fallback={x:Math.cos(theta)*(.3+v*1.7),y:Math.sin(theta)*(.3+v)*.7,z:Math.sin(i)*.15};
+   const point={logo:logo.length?logo[i%logo.length]:fallback,car:carPoint(i,n),sphere,size:.55+(i%7)/7,s1:Math.sin(seed),c1:Math.cos(seed),s2:Math.sin(seed*1.3),c2:Math.cos(seed*1.3),jz:Math.sin(seed*.7)};
+   groups[i%5<2?0:i%5===2?1:2].push(point);return point;
+  });
+  ambient=Array.from({length:small.matches?25:55},(_,i)=>({x:Math.sin(i*74.17)*.5+.5,y:Math.cos(i*31.1)*.5+.5,speed:i%3+1,size:i%3===0?1.4:.7}));dirty=true;
+ }
+ function measure(){
+  const rect=canvas.getBoundingClientRect(),sectionRect=section.getBoundingClientRect();
+  geometry.top=sectionRect.top+scrollY;geometry.span=Math.max(1,section.offsetHeight-stage.offsetHeight);
+  const w=Math.round(rect.width),h=Math.round(rect.height);
+  if(w!==width||h!==height){width=w;height=h;const budget=Math.sqrt(2200000/Math.max(1,width*height));const dpr=Math.min(devicePixelRatio||1,small.matches?1.25:1.5,budget);canvas.width=Math.round(width*dpr);canvas.height=Math.round(height*dpr);ctx.setTransform(dpr,0,0,dpr,0,0);dirty=true;}
+  updateProgress(true);
+ }
+ function updateProgress(force=false){
+  if(!visible&&!force)return;
+  const next=reduced.matches?0:clamp((scrollY-geometry.top)/geometry.span);
+  if(force||Math.abs(next-progress)>.0001){progress=next;copy();dirty=true;if(visible&&!frame)draw();}
+ }
  function draw(){
-  ctx.clearRect(0,0,width,height);if(reduced.matches)return;
-  const phaseProgress=progress<.5?clamp(progress/.48):clamp((progress-.5)/.48);const mix=smooth(phaseProgress);const burst=Math.sin(mix*Math.PI)*.65;
-  const yaw=Math.sin(time*.14)*.22+(progress<.5?mix*.45:.45+mix*.8),cy=Math.cos(yaw),sy=Math.sin(yaw);const scale=Math.min(width*(small.matches?.21:.12),height*.25);const centerX=width*(small.matches?.5:.69),centerY=height*(small.matches?.68:.50);
-  const points=[];
-  for(const p of particles){
-   const from=progress<.5?p.logo:p.car,to=progress<.5?p.car:p.sphere;
-   let x=from.x+(to.x-from.x)*mix,y=from.y+(to.y-from.y)*mix,z=from.z+(to.z-from.z)*mix;
-   x+=Math.sin(p.seed+time*.4)*burst;y+=Math.cos(p.seed*1.3+time*.3)*burst;z+=Math.sin(p.seed*.7)*burst;
-   const rx=x*cy+z*sy,rz=z*cy-x*sy,depth=5/(5+rz);let px=centerX+rx*scale*depth,py=centerY+y*scale*depth;
-   if(fine.matches){const dx=px-mouse.x,dy=py-mouse.y,d=Math.sqrt(dx*dx+dy*dy);if(d>0&&d<100){const force=(1-d/100)*14;px+=dx/d*force;py+=dy/d*force;}}
-   points.push({x:px,y:py,r:p.size*depth,color:p.color,alpha:.42+clamp((rz+2)/4)*.52});
+  if(!visible||reduced.matches||document.hidden)return;
+  ctx.clearRect(0,0,width,height);
+  const phaseProgress=progress<.5?clamp(progress/.48):clamp((progress-.5)/.48),mix=smooth(phaseProgress),burst=Math.sin(mix*Math.PI)*.65;
+  const yaw=Math.sin(time*.14)*.22+(progress<.5?mix*.45:.45+mix*.8),cy=Math.cos(yaw),sy=Math.sin(yaw),scale=Math.min(width*(small.matches?.21:.12),height*.25),centerX=width*(small.matches?.5:.69),centerY=height*(small.matches?.68:.50);
+  const ct1=Math.cos(time*.4),st1=Math.sin(time*.4),ct2=Math.cos(time*.3),st2=Math.sin(time*.3),interactive=fine.matches&&mouse.x>=0;
+  const colors=['#d6b778','#dce5eb','#589ac2'];
+  for(let g=0;g<groups.length;g++){
+   ctx.fillStyle=colors[g];ctx.globalAlpha=g===1?.86:.78;ctx.beginPath();
+   for(const p of groups[g]){
+    const from=progress<.5?p.logo:p.car,to=progress<.5?p.car:p.sphere;
+    const x=from.x+(to.x-from.x)*mix+(p.s1*ct1+p.c1*st1)*burst;
+    const y=from.y+(to.y-from.y)*mix+(p.c2*ct2-p.s2*st2)*burst;
+    const z=from.z+(to.z-from.z)*mix+p.jz*burst;
+    const rx=x*cy+z*sy,rz=z*cy-x*sy,depth=5/(5+rz);let px=centerX+rx*scale*depth,py=centerY+y*scale*depth;
+    if(interactive){const dx=px-mouse.x,dy=py-mouse.y,d2=dx*dx+dy*dy;if(d2>0&&d2<10000){const d=Math.sqrt(d2),force=(1-d/100)*14;px+=dx/d*force;py+=dy/d*force;}}
+    const radius=p.size*depth;ctx.moveTo(px+radius,py);ctx.arc(px,py,radius,0,Math.PI*2);
+   }
+   ctx.fill();
   }
-  for(const p of points){ctx.globalAlpha=p.alpha;ctx.fillStyle=p.color;ctx.beginPath();ctx.arc(p.x,p.y,p.r,0,Math.PI*2);ctx.fill();}
-  ctx.globalAlpha=1;
-  // Quiet ambient motes stay behind the formed object.
   ctx.fillStyle='#d8c596';ctx.globalAlpha=.3;
-  for(let i=0;i<(small.matches?32:72);i++){const x=((Math.sin(i*74.17)*.5+.5)*width+time*(i%3+1))%width;const y=(Math.cos(i*31.1)*.5+.5)*height;ctx.fillRect(x,y,i%3===0?1.4:.7,i%3===0?1.4:.7);}ctx.globalAlpha=1;
+  for(const dot of ambient)ctx.fillRect((dot.x*width+time*dot.speed)%width,dot.y*height,dot.size,dot.size);
+  ctx.globalAlpha=1;dirty=false;
  }
  function running(){return visible&&!document.hidden&&!paused&&!reduced.matches;}
- function tick(stamp){frame=0;if(!running()){last=0;return;}time+=last?Math.min(stamp-last,40)/1000:0;last=stamp;draw();frame=requestAnimationFrame(tick);}
- function refresh(){button.disabled=reduced.matches;button.textContent=reduced.matches?t('Motion reduced','已减少动态效果'):paused?t('Play particles','播放粒子动画'):t('Pause particles','暂停粒子动画');button.setAttribute('aria-pressed',String(paused));section.classList.toggle('particles-reduced',reduced.matches);if(!running()){cancelAnimationFrame(frame);frame=0;last=0;draw();}else if(!frame)frame=requestAnimationFrame(tick);}
+ function tick(stamp){
+  frame=0;if(!running()){lastDraw=0;return;}
+  const interval=small.matches?1000/30:1000/60;
+  if(!lastDraw||stamp-lastDraw>=interval-.8){time+=lastDraw?Math.min(stamp-lastDraw,100)/1000:0;lastDraw=stamp;draw();}
+  frame=requestAnimationFrame(tick);
+ }
+ function refresh(){
+  button.disabled=reduced.matches;button.textContent=reduced.matches?t('Motion reduced','已减少动态效果'):paused?t('Play particles','播放粒子动画'):t('Pause particles','暂停粒子动画');button.setAttribute('aria-pressed',String(paused));section.classList.toggle('particles-reduced',reduced.matches);
+  if(!running()){cancelAnimationFrame(frame);frame=0;lastDraw=0;if(visible&&dirty)draw();}else if(!frame)frame=requestAnimationFrame(tick);
+ }
  button.onclick=()=>{paused=!paused;refresh();};
- new IntersectionObserver(entries=>{visible=entries[0].isIntersecting;refresh();},{threshold:.02}).observe(section);
- let scrollQueued=false;addEventListener('scroll',()=>{if(!scrollQueued){scrollQueued=true;requestAnimationFrame(()=>{scrollQueued=false;updateProgress();});}},{passive:true});
- canvas.addEventListener('pointermove',e=>{const rect=canvas.getBoundingClientRect();mouse.x=e.clientX-rect.left;mouse.y=e.clientY-rect.top;});canvas.addEventListener('pointerleave',()=>{mouse.x=mouse.y=-10000;});
- addEventListener('resize',()=>{resize();updateProgress();});document.addEventListener('visibilitychange',refresh);reduced.addEventListener('change',()=>{updateProgress();refresh();});addEventListener('tj:language',()=>{phase=-1;copy();refresh();});
- seed();resize();updateProgress();refresh();
+ new IntersectionObserver(entries=>{visible=entries[0].isIntersecting;if(visible)measure();refresh();},{threshold:.02}).observe(section);
+ let scrollQueued=false;addEventListener('scroll',()=>{if(visible&&!scrollQueued){scrollQueued=true;requestAnimationFrame(()=>{scrollQueued=false;updateProgress();});}},{passive:true});
+ canvas.addEventListener('pointermove',e=>{if(!visible||!fine.matches)return;const rect=canvas.getBoundingClientRect();mouse.x=e.clientX-rect.left;mouse.y=e.clientY-rect.top;});canvas.addEventListener('pointerleave',()=>{mouse.x=mouse.y=-10000;});
+ addEventListener('resize',()=>{clearTimeout(resizeTimer);resizeTimer=setTimeout(()=>{if(particles.length!==(small.matches?700:2200))seed();measure();},120);});
+ document.addEventListener('visibilitychange',refresh);reduced.addEventListener('change',()=>{refresh();measure();refresh();});addEventListener('tj:language',()=>{phase=-1;measure();copy();refresh();});
+ seed();measure();refresh();
  const image=new Image();image.onload=()=>{
-  // Read logo pixels only to form the live particle positions.
   const sample=document.createElement('canvas');sample.width=300;sample.height=100;const sc=sample.getContext('2d');sc.drawImage(image,0,0,300,100);const data=sc.getImageData(0,0,300,100).data,points=[];
   for(let y=0;y<100;y+=2)for(let x=0;x<300;x+=2){const k=(y*300+x)*4;if(Math.max(data[k],data[k+1],data[k+2])>100&&data[k+3]>100)points.push({x:(x/300-.5)*4.5,y:(y/100-.5)*1.5,z:Math.sin(x*.1)*.04});}
-  seed(points);draw();
+  seed(points);if(visible)draw();
  };image.src='./assets/tj-logo.png';
 })();
