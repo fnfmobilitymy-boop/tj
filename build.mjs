@@ -3,7 +3,7 @@ import {createHash} from 'node:crypto';
 await rm('_site',{recursive:true,force:true});
 await mkdir('_site',{recursive:true});
 let html=await readFile('index.html','utf8');
-for(const file of ['style.css','app.js','fleet-data.js']){
+for(const file of ['style.css','app.js','fleet-data.js','i18n.js','services.js','particles.js','carousel.js']){
  if(!html.includes('./'+file))continue;
  const bytes=await readFile(file);
  const hash=createHash('sha256').update(bytes).digest('hex').slice(0,12);

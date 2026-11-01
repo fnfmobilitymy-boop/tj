@@ -1,28 +1,41 @@
 # TJ Kuching Car Rental
 
-Malaysia car rental website prototype, inspired by the supplied dark automotive references.
+Responsive navy, white and champagne-gold car rental and travel enquiry website.
 
-Requires Node.js 24. No package installation or external services are required.
+## Run
+
+Requires Node.js 24; there are no npm dependencies.
 
 ```sh
-cd /workspace/tj
 npm run dev
+npm run check
+npm run build
 ```
 
-The server listens on port 3000 (`PORT` overrides it). Run `npm run check` for JavaScript syntax validation.
+Development server: port 3000 (`PORT` overrides it). The build produces `_site` with content-hashed CSS and JavaScript to prevent mixed cached versions.
 
-Features: responsive fleet catalogue, category/budget/passenger filters, price sorting, rental date selection, estimated totals, booking request form and browser-local booking history.
+## Features
 
-This is a frontend demo. Bookings are stored only in this browser's localStorage and are not sent to an operator. Prices and fleet data are samples. No payment, real availability, authentication or backend is connected. Contact addresses are placeholders. Local car images are style references extracted from the user-supplied video, not photos of the listed vehicles. Replace these with authorised fleet photos and connect a booking service before commercial use.
+- Bilingual English / Simplified Chinese interface, with browser-saved language preference.
+- Opening logo animation, two-video hero carousel, reversible pinned hero transition, and gold/blue Canvas particle morphing between TJ mark, a car silhouette and a sphere.
+- Opposing brand reels with hover pause, mouse drag, keyboard navigation, explicit pause and an expandable grid.
+- 27-brand, 118-model sample catalogue with brand URLs, search, type/budget/seats filtering and sorting.
+- Kuching trip enquiry ideas, chauffeur enquiries, Sabah rental enquiries, original travel guides and booking information.
+- Enquiry form, editable review, browser-local drafts, delete confirmation, WhatsApp/email handoff, and My Order.
+- TJ's verified public phone/email/address, Google Maps search link and embed.
+- Facebook, TikTok, Instagram and YouTube icons only; profile links have not been supplied.
+- Reduced-motion alternatives and pause controls. Video and particle rendering stop when offscreen or hidden.
+
+## Booking and catalogue limits
+
+This is an enquiry website, not a live reservation or payment backend. The browser stores drafts under `tj-requests`. Users must explicitly send the prepared WhatsApp message or email; the site cannot verify sending or confirmation. No payment is collected. Final availability, service coverage, prices and terms must be confirmed by TJ.
+
+Vehicle entries and rental prices in `fleet-data.js` are examples, not proof of available rental stock. Vehicle photography is pending; manufacturer emblems identify sample models. Kuching itineraries are original suggested ideas, not copied or confirmed commercial tours. Sabah is an enquiry destination, not a confirmed operating location. Booking information does not invent deposit or cancellation rules.
+
+Contact information was read from https://www.tjkuchingcarrental.com/: +60168689517 (Tomasz), tjkuchingcarrental@gmail.com, Lot L1, Domestic Arrival Hall, Gate 1, Kuching International Airport, 93722 Kuching, Sarawak. The official website lists daily hours of 8:30 am–10 pm. The reference navigation informed feature categories only; no competitor contacts or package prices are used.
+
+Brand emblem provenance: `assets/brands/SOURCE.txt`. Social icon licence: `assets/social/LICENSE.txt`. Local video assets came from the user's uploads. The requested Horizon Drift typeface has not been embedded because no font file has been supplied.
 
 ## GitHub Pages
 
-Push these files, including `.github/workflows/pages.yml`, to the `main` branch of `fnfmobilitymy-boop/tj`. In repository Settings → Pages → Build and deployment, select GitHub Actions. Run the Deploy website to GitHub Pages workflow or push a new commit. After a successful deployment, the expected URL is https://fnfmobilitymy-boop.github.io/tj/ (unless the account or repository has a custom Pages domain). This URL is not live until deployment succeeds.
-
-Static asset paths are relative so the site works under `/tj/`. The workflow uploads only public website files. Contact links temporarily point to the existing official website; phone, exact address, email and a precise map remain pending because access to the official website is blocked by the environment proxy.
-
-## Brand catalogue
-
-`fleet-data.js` contains 27 brands and 118 illustrative Malaysian-market models. Clicking a brand opens its filtered collection; vehicle type, budget, seats, model search and sorting refine it. Brand URLs use `?brand=bmw`, for example. These entries and prices are samples, not evidence of available rental stock. Manufacturer emblems identify brands, while real vehicle photography remains pending. `assets/brands/SOURCE.txt` records emblem provenance.
-
-`npm run build` creates `_site` with content-hashed CSS and JavaScript to prevent stale asset mixing on Pages. The deployment workflow uses this output.
+The workflow `.github/workflows/pages.yml` builds and deploys `_site` on pushes to `main`, or via Run workflow. Pages is configured to use GitHub Actions. Website: https://fnfmobilitymy-boop.github.io/tj/.
