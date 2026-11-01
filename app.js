@@ -87,6 +87,7 @@ $('#bookingLookup').onclick=()=>{let bookings=[];try{bookings=JSON.parse(localSt
  const video=document.getElementById('heroVideo');
  const toggle=document.getElementById('videoToggle');
  if(!scene||!video||!toggle)return;
+ video.muted=true;video.defaultMuted=true;video.setAttribute('muted','');
  const reduced=matchMedia('(prefers-reduced-motion: reduce)');
  const clamp=n=>Math.max(0,Math.min(1,n));
  let requested=false,userPaused=false,inView=true,introDone=!document.getElementById('brandIntro');
@@ -94,7 +95,7 @@ $('#bookingLookup').onclick=()=>{let bookings=[];try{bookings=JSON.parse(localSt
  function playback(){
   if(!document.hidden&&inView&&introDone&&!userPaused&&!reduced.matches){video.play().catch(label);}else{video.pause();}label();
  }
- video.addEventListener('play',label);video.addEventListener('pause',label);
+ video.addEventListener('play',label);video.addEventListener('pause',label);video.addEventListener('canplay',playback);
  toggle.addEventListener('click',()=>{if(video.paused){userPaused=false;video.play().catch(label);}else{userPaused=true;video.pause();}label();});
  video.addEventListener('error',()=>{toggle.textContent='Video unavailable';toggle.disabled=true;});
  new IntersectionObserver(entries=>{inView=entries[0].isIntersecting;playback();},{threshold:.05}).observe(scene);

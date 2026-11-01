@@ -1,1 +1,11 @@
-{"name":"tj-kuching-car-rental","version":"1.0.0","private":true,"scripts":{"dev":"node server.mjs","start":"node server.mjs","check":"node --check app.js && node --check server.mjs"}}
+{
+  "name": "tj-kuching-car-rental",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "node server.mjs",
+    "start": "node server.mjs",
+    "check": "node --check app.js && node --check server.mjs",
+    "build": "node build.mjs"
+  }
+}

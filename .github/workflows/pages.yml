@@ -26,12 +26,8 @@ jobs:
         with:
           node-version: '24'
       - run: npm run check
-      - name: Prepare static website
-        run: |
-          mkdir -p _site
-          cp index.html style.css app.js _site/
-          cp -R assets _site/assets
-          touch _site/.nojekyll
+      - name: Build versioned website
+        run: npm run build
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v3
         with:
