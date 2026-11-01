@@ -5,7 +5,7 @@
   "scripts": {
     "dev": "node server.mjs",
     "start": "node server.mjs",
-    "check": "node --check app.js && node --check fleet-data.js && node --check server.mjs && node --check build.mjs && node --check i18n.js && node --check services.js && node --check particles.js && node --check carousel.js",
+    "check": "node --check app.js && node --check fleet-data.js && node --check server.mjs && node --check build.mjs && node --check i18n.js && node --check services.js && node --check particles.js && node --check carousel.js && node --check navigation.js",
     "build": "node build.mjs"
   }
 }
