@@ -15,7 +15,7 @@
 .intro-center{width:min(620px,84vw);display:flex;flex-direction:column;align-items:center;position:relative}
 .intro-halo{position:absolute;width:min(780px,150vw);aspect-ratio:1;background:radial-gradient(ellipse,#2c3b4a55,transparent 65%);animation:intro-halo 2.7s ease both}
 .intro-logo-wrap{width:100%;position:relative;overflow:hidden;animation:intro-reveal 1.35s cubic-bezier(.2,.7,.2,1) both}
-.intro-logo{display:block;width:100%;height:auto;mix-blend-mode:screen}
+.intro-logo{display:block;width:100%;height:auto;mix-blend-mode:normal;animation:intro-logo-light 1.8s .3s ease both}
 .intro-shine{position:absolute;inset:0;background:linear-gradient(110deg,transparent 35%,#f3d59c40 49%,transparent 63%);transform:translateX(-120%);animation:intro-shine 1.3s .55s ease both;mix-blend-mode:screen}
 .intro-tagline{color:#d5bd8d;letter-spacing:.35em;text-align:center;font-size:10px;margin:25px 0 28px;animation:intro-caption .8s .45s both}
 .intro-line{width:116px;height:1px;background:#344252;overflow:hidden}.intro-line span{display:block;width:100%;height:100%;background:#dfbd77;transform-origin:left;animation:intro-line 2s ease-in-out both}
@@ -50,3 +50,13 @@ dialog[open]{animation:dialog-enter .25s cubic-bezier(.2,.7,.2,1)}dialog[open]::
 @keyframes backdrop-enter{from{opacity:0}to{opacity:1}}
 @media(hover:none){.car:hover,.primary:hover,.help-card:hover{transform:none}.car:hover img{transform:none}.car:after{display:none}}
 @media(prefers-reduced-motion:reduce){.motion-reveal{opacity:1;translate:none;transition:none}.scroll-progress{display:none}.hero-art img{transform:none!important}.primary,.tabs button,.book,.contact,.intro-skip,.help-card,.bottom-banner>a span,.contact span,.nav nav a:before{transition:none}dialog[open],dialog[open]::backdrop{animation:none}.primary:hover,.help-card:hover{transform:none}}
+
+/* Transparent logo sits directly over the shared navy backdrop. */
+.intro-shine{display:none}.company-logo,.intro-logo{background:transparent}.intro-logo-wrap{overflow:visible}
+@keyframes intro-logo-light{0%,100%{filter:brightness(1)}50%{filter:brightness(1.15)}}
+@media(prefers-reduced-motion:reduce){.intro-logo{animation:none}}
+
+/* Blend dark image pixels into an identical, flat navy stage. */
+.intro-halo{display:none}.intro-center,.intro-logo-wrap{background:#060d15}.intro-logo-wrap{animation:intro-clean-reveal 1.35s cubic-bezier(.2,.7,.2,1) both}.intro-logo,.company-logo{mix-blend-mode:lighten}.intro-logo{animation:none}.intro-center{isolation:isolate}.intro-shine{display:none}
+@keyframes intro-clean-reveal{from{opacity:0;transform:translateY(12px) scale(.96)}to{opacity:1;transform:translateY(0) scale(1)}}
+@media(prefers-reduced-motion:reduce){.intro-logo-wrap{animation:none}}
