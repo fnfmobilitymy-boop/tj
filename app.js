@@ -79,3 +79,43 @@ $('#bookingLookup').onclick=()=>{let bookings=[];try{bookings=JSON.parse(localSt
   const box=card.getBoundingClientRect();card.style.setProperty('--pointer-x',`${e.clientX-box.left}px`);card.style.setProperty('--pointer-y',`${e.clientY-box.top}px`);
  });
 })();
+
+// Hero phases: 0–35% copy exit, 15–85% film framing, then next section.
+(() => {
+ const section=document.querySelector('.hero-scroll');
+ const scene=section?.querySelector('.hero-scene');
+ const video=document.getElementById('heroVideo');
+ const toggle=document.getElementById('videoToggle');
+ if(!scene||!video||!toggle)return;
+ const reduced=matchMedia('(prefers-reduced-motion: reduce)');
+ const clamp=n=>Math.max(0,Math.min(1,n));
+ let requested=false,userPaused=false,inView=true,introDone=!document.getElementById('brandIntro');
+ function label(){toggle.innerHTML=video.paused?'Play film <span aria-hidden="true">▶</span>':'Pause film <span aria-hidden="true">Ⅱ</span>';toggle.setAttribute('aria-label',video.paused?'Play background video':'Pause background video');}
+ function playback(){
+  if(!document.hidden&&inView&&introDone&&!userPaused&&!reduced.matches){video.play().catch(label);}else{video.pause();}label();
+ }
+ video.addEventListener('play',label);video.addEventListener('pause',label);
+ toggle.addEventListener('click',()=>{if(video.paused){userPaused=false;video.play().catch(label);}else{userPaused=true;video.pause();}label();});
+ video.addEventListener('error',()=>{toggle.textContent='Video unavailable';toggle.disabled=true;});
+ new IntersectionObserver(entries=>{inView=entries[0].isIntersecting;playback();},{threshold:.05}).observe(scene);
+ const intro=document.getElementById('brandIntro');
+ if(intro){const watcher=new MutationObserver(()=>{if(!intro.isConnected){introDone=true;watcher.disconnect();playback();}});watcher.observe(document.body,{childList:true});}
+ function update(){
+  const distance=Math.max(1,section.offsetHeight-scene.offsetHeight);
+  const p=reduced.matches?0:clamp((16-section.getBoundingClientRect().top)/distance);
+  const exit=clamp(p/.48);const frame=clamp((p-.12)/.73);
+  scene.style.setProperty('--hero-progress',p.toFixed(3));
+  scene.style.setProperty('--copy-opacity',(1-exit).toFixed(3));
+  scene.style.setProperty('--copy-shift',`${-exit*95}px`);
+  scene.style.setProperty('--copy-events',exit>.95?'none':'auto');
+  scene.style.setProperty('--film-scale',(1.08-frame*.08).toFixed(3));
+  scene.style.setProperty('--film-inset',`${frame*3}%`);
+  scene.style.setProperty('--film-radius',`${8+frame*16}px`);
+  scene.style.setProperty('--cue-opacity',(1-clamp(p*4)).toFixed(3));
+  requested=false;
+ }
+ addEventListener('scroll',()=>{if(!requested){requested=true;requestAnimationFrame(update);}},{passive:true});
+ addEventListener('resize',update);document.addEventListener('visibilitychange',playback);
+ reduced.addEventListener('change',()=>{update();playback();});
+ update();playback();
+})();
