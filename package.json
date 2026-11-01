@@ -5,7 +5,9 @@
   "scripts": {
     "dev": "node server.mjs",
     "start": "node server.mjs",
-    "check": "node --check app.js && node --check fleet-data.js && node --check server.mjs && node --check build.mjs && node --check i18n.js && node --check services.js && node --check particles.js && node --check carousel.js && node --check navigation.js && node --check ms.js && node --check quick-quote.js",
-    "build": "node build.mjs"
+    "check": "node --check app.js && node --check fleet-data.js && node --check server.mjs && node --check build.mjs && node --check i18n.js && node --check services.js && node --check particles.js && node --check carousel.js && node --check navigation.js && node --check ms.js && node --check quick-quote.js && node --check pages.mjs",
+    "build": "node build.mjs",
+    "predev": "node build.mjs",
+    "prestart": "node build.mjs"
   }
 }

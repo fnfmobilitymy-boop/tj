@@ -1,4 +1,7 @@
 (() => {
+ const legacyRoutes={packages:'kuching-holiday-packages.html',chauffeur:'private-charter.html',journal:'blog.html',sabah:'sabah-car-rental.html','sabah-chauffeur':'sabah-private-charter.html','sabah-packages':'sabah-holiday-packages.html',terms:'terms.html',orders:'my-order.html'};
+ function redirectLegacy(){if(!document.getElementById('travelServices')?.dataset.page&&legacyRoutes[location.hash.slice(1)]){location.replace(new URL('./'+legacyRoutes[location.hash.slice(1)],location.href));return true;}return false;}
+ addEventListener('hashchange',redirectLegacy);if(redirectLegacy())return;
  const header=document.querySelector('.nav-compact'),menu=document.getElementById('headerLinks'),toggle=document.getElementById('navToggle');if(!header||!menu||!toggle)return;
  function open(value){header.classList.toggle('menu-open',value);toggle.setAttribute('aria-expanded',String(value));const label=value?'Close menu':'Open menu';toggle.setAttribute('data-original-aria-label',label);toggle.setAttribute('aria-label',window.TJI18n.text(label));}
  toggle.onclick=()=>open(toggle.getAttribute('aria-expanded')!=='true');

@@ -57,3 +57,18 @@ All vehicle card visuals are AI-generated illustrations, grouped in nine 4×4 im
 After the opening logo animation, `quick-quote.js` drops a non-modal quote panel from the top on a normal homepage entry. Moving the page more than 20 px dismisses it; close and Escape work too. The hero's Quick quote button reopens it. Direct links to page sections and visitors who already scroll before the panel opens are not interrupted.
 
 The panel offers all Demo models, pick-up date and 1–30 rental days, calculates a clearly labelled example rental amount, and opens a prepared WhatsApp enquiry only on user submission. It does not send a message automatically or confirm a reservation. English, Chinese and Malay are supported, with reduced-motion styling.
+
+## Independent pages
+
+`pages.mjs` generates nine real HTML documents at build time. The six service navigation entries have their own URLs:
+
+- `kuching-holiday-packages.html`
+- `private-charter.html`
+- `blog.html`
+- `sabah-car-rental.html`
+- `sabah-private-charter.html`
+- `sabah-holiday-packages.html`
+
+`index.html` remains the Kuching rental homepage. `my-order.html` and `terms.html` provide shared account-free request drafts and booking information. Each service page renders only its relevant content plus TJ contact details, with shared three-language navigation, footer and floating WhatsApp. The homepage no longer contains all service sections.
+
+Language preference and enquiry drafts persist across pages in same-origin localStorage. Forms work without homepage DOM elements; package enquiries can be reviewed, edited and sent via WhatsApp/email, with My Order accessible as a separate page. Old homepage service hash links redirect to the relevant document. Development startup runs the build; the local server serves generated pages and hashed scripts from `_site` when there is no source file at that URL.

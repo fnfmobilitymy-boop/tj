@@ -1,5 +1,6 @@
 // Bahasa Melayu copy for the demo site.
 window.TJMalay = {
+  "Home":"Laman utama",
   "English":"Bahasa Inggeris",
   "Chinese":"Bahasa Cina",
   "Bahasa Melayu":"Bahasa Melayu",
