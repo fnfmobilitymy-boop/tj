@@ -1,3 +1,18 @@
+(() => {
+ const intro=document.getElementById('brandIntro');
+ if(!intro)return;
+ if(window.matchMedia('(prefers-reduced-motion: reduce)').matches){intro.remove();return;}
+ const skip=document.getElementById('skipIntro');
+ function finish(){
+  if(!intro.isConnected)return;
+  const restoreFocus=intro.contains(document.activeElement);
+  intro.classList.add('is-leaving');
+  setTimeout(()=>{intro.remove();if(restoreFocus)document.querySelector('.nav .brand')?.focus({preventScroll:true});},300);
+ }
+ skip.addEventListener('click',finish);
+ intro.addEventListener('keydown',e=>{if(e.key==='Escape')finish();});
+ setTimeout(finish,2700);
+})();
 const cars=[
  {id:'myvi',name:'Perodua Myvi',category:'Sedan',type:'COMPACT · CITY FAVOURITE',description:'Little car. Big possibilities.',price:120,seats:5,bags:2,tag:'MOST POPULAR',image:'photo-1549317661-bd32c8ce0db2'},
  {id:'city',name:'Honda City',category:'Sedan',type:'SEDAN · EVERYDAY EASE',description:'A smooth ride, wherever life goes.',price:180,seats:5,bags:3,tag:'',image:'photo-1590362891991-f776e747a588'},

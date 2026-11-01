@@ -9,3 +9,23 @@
 .nav{height:112px;display:grid;grid-template-columns:190px 1fr auto;gap:32px;align-items:center}.nav>.brand{width:190px;justify-content:center;line-height:1}.company-logo{width:190px;height:76px;object-fit:contain;display:block;border-radius:0}.nav nav{justify-content:center;gap:30px}.nav-right{margin:0;justify-content:flex-end}.primary{background:linear-gradient(110deg,#e9cc93,#d3ad65);color:#101722}.primary:hover{background:#f1d7a4}.search{box-shadow:0 12px 36px #00000024}.car{background:linear-gradient(155deg,#142131,#0d1825)}.car:hover{box-shadow:0 12px 30px #00000026}.book{min-width:78px}.bottom-banner{background:radial-gradient(ellipse at 90% 100%,#3b3426,transparent 70%),#111e2c}.brand-dot{color:var(--lime)}footer{display:grid;grid-template-columns:190px 1fr auto auto;gap:24px;align-items:center}footer .brand{justify-content:center}footer .company-logo{width:190px;height:76px}footer>span,footer>span:last-child{margin-left:0}a.brand{letter-spacing:normal}
 @media(max-width:1100px) and (min-width:701px){.nav{grid-template-columns:170px 1fr auto;gap:20px}.nav>.brand,.company-logo{width:170px}.nav nav{gap:22px}footer{grid-template-columns:170px 1fr auto}footer>span:last-child{display:none}}
 @media(max-width:700px){.nav{height:auto;min-height:138px;grid-template-columns:1fr;gap:0;padding:12px 0 0;justify-items:center}.nav>.brand{width:180px}.company-logo{width:180px;height:72px}.nav nav{height:44px;width:100%;justify-content:center;gap:34px;margin:0;font-size:11px}.nav nav a:nth-child(2){display:flex}.nav-right{display:none}.hero-copy{padding-top:30px}footer{grid-template-columns:1fr;text-align:center;justify-items:center;gap:13px;padding:26px 0}footer .company-logo{width:180px;height:72px}footer>span:last-child{margin:0}.hero-proof{flex-wrap:wrap;row-gap:8px}.contact{border-color:#8f764b}}
+
+/* Short brand opening; the actual website remains available underneath. */
+.brand-intro{position:fixed;inset:0;z-index:1000;display:grid;place-items:center;overflow:hidden;background:#060d15;animation:intro-exit .6s 2.1s ease forwards}
+.intro-center{width:min(620px,84vw);display:flex;flex-direction:column;align-items:center;position:relative}
+.intro-halo{position:absolute;width:min(780px,150vw);aspect-ratio:1;background:radial-gradient(ellipse,#2c3b4a55,transparent 65%);animation:intro-halo 2.7s ease both}
+.intro-logo-wrap{width:100%;position:relative;overflow:hidden;animation:intro-reveal 1.35s cubic-bezier(.2,.7,.2,1) both}
+.intro-logo{display:block;width:100%;height:auto;mix-blend-mode:screen}
+.intro-shine{position:absolute;inset:0;background:linear-gradient(110deg,transparent 35%,#f3d59c40 49%,transparent 63%);transform:translateX(-120%);animation:intro-shine 1.3s .55s ease both;mix-blend-mode:screen}
+.intro-tagline{color:#d5bd8d;letter-spacing:.35em;text-align:center;font-size:10px;margin:25px 0 28px;animation:intro-caption .8s .45s both}
+.intro-line{width:116px;height:1px;background:#344252;overflow:hidden}.intro-line span{display:block;width:100%;height:100%;background:#dfbd77;transform-origin:left;animation:intro-line 2s ease-in-out both}
+.intro-skip{position:absolute;right:max(6vw,24px);bottom:max(5vh,24px);background:transparent;color:#bbc4cf;border:1px solid #354254;border-radius:4px;padding:11px 16px;font-size:11px;letter-spacing:.06em}.intro-skip span{margin-left:16px}.intro-skip:hover{color:#dfbd77;border-color:#dfbd77}
+.brand-intro.is-leaving{animation:none;transition:opacity .3s;opacity:0;pointer-events:none}
+@keyframes intro-reveal{from{opacity:0;transform:translateY(12px) scale(.94);filter:blur(10px)}to{opacity:1;transform:translateY(0) scale(1);filter:blur(0)}}
+@keyframes intro-shine{to{transform:translateX(120%)}}
+@keyframes intro-caption{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+@keyframes intro-line{from{transform:scaleX(0)}to{transform:scaleX(1)}}
+@keyframes intro-halo{0%{opacity:0;transform:scale(.7)}50%{opacity:1}100%{opacity:.5;transform:scale(1.15)}}
+@keyframes intro-exit{to{opacity:0;visibility:hidden;pointer-events:none}}
+@media(max-width:700px){.intro-center{width:90vw}.intro-tagline{font-size:8px;letter-spacing:.26em;margin:20px 0 25px}}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}.brand-intro{display:none}.brand-intro *{animation:none!important}.car,.car-image img{transition:none}}
