@@ -13,22 +13,43 @@
  intro.addEventListener('keydown',e=>{if(e.key==='Escape')finish();});
  setTimeout(finish,2700);
 })();
-const cars=[
- {id:'myvi',name:'Perodua Myvi',category:'Sedan',type:'COMPACT · CITY FAVOURITE',description:'Little car. Big possibilities.',price:120,seats:5,bags:2,tag:'MOST POPULAR',image:'photo-1549317661-bd32c8ce0db2'},
- {id:'city',name:'Honda City',category:'Sedan',type:'SEDAN · EVERYDAY EASE',description:'A smooth ride, wherever life goes.',price:180,seats:5,bags:3,tag:'',image:'photo-1590362891991-f776e747a588'},
- {id:'x50',name:'Proton X50',category:'SUV',type:'SUV · ROOM TO EXPLORE',description:'For the road less ordinary.',price:230,seats:5,bags:3,tag:'GREAT VALUE',image:'photo-1519641471654-76ce0107ad1b'},
- {id:'alza',name:'Perodua Alza',category:'MPV',type:'MPV · BRING EVERYONE',description:'More room for your favourite people.',price:200,seats:7,bags:2,tag:'',image:'photo-1502877338535-766e1452684a'},
- {id:'bmw',name:'BMW 3 Series',category:'Premium',type:'PREMIUM · A LITTLE EXTRA',description:'Make every arrival an occasion.',price:550,seats:5,bags:3,tag:'TREAT YOURSELF',image:'photo-1555215695-3004980ad54e'},
- {id:'alphard',name:'Toyota Alphard',category:'MPV',type:'MPV · TRAVEL BEAUTIFULLY',description:'First-class comfort. Every kilometre.',price:650,seats:7,bags:4,tag:'',image:'photo-1544620347-c4fd4a3d5957'}
-];
+const cars=window.fleetCars;
+const brands=window.fleetBrands;
+let brand=brands.some(b=>b.id===new URLSearchParams(location.search).get('brand'))?new URLSearchParams(location.search).get('brand'):'All';
+let expandedBrands=brand!=='All';
 const $=s=>document.querySelector(s);let category='All';let selected=null;
 const dateString=d=>`${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
 const today=new Date();$('#pickup').min=dateString(today);$('#pickup').value=dateString(new Date(today.getFullYear(),today.getMonth(),today.getDate()+1));$('#return').value=dateString(new Date(today.getFullYear(),today.getMonth(),today.getDate()+4));
 function syncDates(){const next=new Date($('#pickup').value+'T12:00:00');next.setDate(next.getDate()+1);$('#return').min=dateString(next);if($('#return').value<$('#return').min)$('#return').value=$('#return').min;}syncDates();$('#pickup').addEventListener('change',syncDates);
 function days(){return Math.max(1,Math.round((new Date($('#return').value)-new Date($('#pickup').value))/86400000));}
-function render(){let list=cars.filter(c=>(category==='All'||c.category===category)&&c.price<=Number($('#budget').value)&&(!$('#seats').checked||c.seats>=6)&&$('#automatic').checked);if($('#sort').value==='low')list.sort((a,b)=>a.price-b.price);if($('#sort').value==='high')list.sort((a,b)=>b.price-a.price);$('#count').textContent=list.length;$('#budgetLabel').textContent='RM '+Number($('#budget').value).toLocaleString();$('#cars').innerHTML=list.length?list.map(c=>`<article class="car"><div class="car-top"><div class="car-tag">${c.category==='Sedan'&&c.id==='myvi'?'COMPACT':c.category.toUpperCase()} ${c.tag?`<span class="tag">${c.tag}</span>`:''}</div><h3>${c.name}</h3><p class="car-sub">${c.description}</p></div><div class="car-image"><img src="./assets/${c.id}.jpg" alt="${c.name} rental category — illustrative vehicle photo" loading="lazy"></div><div class="specs"><span>♙ &nbsp;${c.seats} seats</span><span>▣ &nbsp;${c.bags} bags</span><span>⚙ &nbsp;Auto</span></div><div class="car-bottom"><div><div class="price"><small>RM</small>${c.price}<span class="per-day">/ day</span></div><div class="deposit">${days()} days · RM ${(c.price*days()).toLocaleString()} estimated</div></div><button class="book" data-car="${c.id}">View deal ↗</button></div></article>`).join(''):'<div class="empty">No cars match these filters.<br><br>Try a higher budget or reset your filters.</div>';}
+function brandLogo(b,kind='brand-emblem'){
+ return b.id==='jaecoo'?`<span class="${kind} brand-wordmark">JAECOO</span>`:`<img class="${kind}" src="${b.logo}" alt="${b.name}" loading="lazy">`;
+}
+function renderBrands(){
+ $('#brandGrid').innerHTML=`<button class="brand-option ${brand==='All'?'is-selected':''}" data-brand="All" aria-pressed="${brand==='All'}"><span class="all-brand-mark" aria-hidden="true">✦</span><strong>All brands</strong><small>${cars.length} models</small></button>`+brands.map((b,i)=>`<button class="brand-option ${brand===b.id?'is-selected':''} ${!expandedBrands&&i>=11?'brand-extra':''}" data-brand="${b.id}" aria-pressed="${brand===b.id}">${brandLogo(b)}<strong>${b.name}</strong><small>${cars.filter(c=>c.brand===b.id).length} models</small></button>`).join('');
+ $('#expandBrands').setAttribute('aria-expanded',String(expandedBrands));$('#expandBrands').innerHTML=expandedBrands?'Show fewer brands <span>−</span>':'Show all 27 brands <span>＋</span>';
+}
+function chooseBrand(value){
+ brand=value;category='All';$('#budget').value=3000;$('#automatic').checked=true;$('#seats').checked=false;$('#modelSearch').value='';
+ document.querySelectorAll('[data-category]').forEach(b=>b.classList.toggle('selected',b.dataset.category==='All'));
+ const url=new URL(location.href);if(brand==='All')url.searchParams.delete('brand');else url.searchParams.set('brand',brand);history.replaceState(null,'',url);
+ renderBrands();render();if(brand!=='All')$('#brandCollection').scrollIntoView({behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'instant':'smooth',block:'start'});
+}
+$('#brandGrid').onclick=e=>{const b=e.target.closest('[data-brand]');if(b)chooseBrand(b.dataset.brand);};
+$('#expandBrands').onclick=()=>{expandedBrands=!expandedBrands;renderBrands();};
+$('#allBrands').onclick=()=>{chooseBrand('All');$('.brand-browser').scrollIntoView({behavior:'smooth'});};
+$('#modelSearch').addEventListener('input',render);
+function render(){
+ const query=$('#modelSearch').value.trim().toLowerCase();
+ const list=cars.filter(c=>(brand==='All'||c.brand===brand)&&(category==='All'||c.category===category)&&c.price<=Number($('#budget').value)&&(!$('#seats').checked||c.seats>=6)&&$('#automatic').checked&&c.name.toLowerCase().includes(query));
+ if($('#sort').value==='low')list.sort((a,b)=>a.price-b.price);if($('#sort').value==='high')list.sort((a,b)=>b.price-a.price);
+ const chosen=brands.find(b=>b.id===brand);$('#collectionTitle').textContent=chosen?chosen.name+' collection.':'All brands. Every kind of drive.';$('#collectionDescription').textContent=chosen?`Explore ${cars.filter(c=>c.brand===brand).length} ${chosen.name} models. Narrow your choice below.`:'Explore 27 brands and 118 sample models popular in Malaysia.';$('#allBrands').hidden=!chosen;
+ $('#count').textContent=list.length;$('#totalModels').textContent=cars.filter(c=>brand==='All'||c.brand===brand).length;$('#budgetLabel').textContent='RM '+Number($('#budget').value).toLocaleString();
+ $('#cars').innerHTML=list.length?list.map(c=>`<article class="car" data-model-brand="${c.brand}"><div class="car-top"><div class="car-tag">${c.category.toUpperCase()} <span class="tag">SAMPLE MODEL</span></div><h3>${c.name}</h3><p class="car-sub">${c.description}</p></div><div class="model-showcase">${brandLogo(brands.find(b=>b.id===c.brand),'model-emblem')}<span class="model-name-art" aria-hidden="true">${c.model}</span><span class="photo-pending">VEHICLE PHOTO COMING SOON</span></div><div class="specs"><span>♙ &nbsp;${c.seats} seats</span><span>▣ &nbsp;${c.bags} bags</span><span>⚙ &nbsp;Auto</span></div><div class="car-bottom"><div><div class="price"><small>RM</small>${c.price}<span class="per-day">/ day</span></div><div class="deposit">${days()} days · RM ${(c.price*days()).toLocaleString()} estimated</div></div><button class="book" data-car="${c.id}">View model ↗</button></div></article>`).join(''):'<div class="empty">No models match these filters.<br><br>Try a higher budget, another vehicle type or reset your filters.</div>';
+}
+renderBrands();
 document.querySelectorAll('[data-category]').forEach(b=>b.onclick=()=>{category=b.dataset.category;document.querySelectorAll('[data-category]').forEach(x=>x.classList.toggle('selected',x===b));render();});
-['budget','seats','automatic','sort'].forEach(id=>$('#'+id).addEventListener(id==='budget'?'input':'change',render));$('#reset').onclick=()=>{category='All';$('#budget').value=1000;$('#seats').checked=false;$('#automatic').checked=true;$('#sort').value='recommended';document.querySelectorAll('[data-category]').forEach(b=>b.classList.toggle('selected',b.dataset.category==='All'));render();};
+['budget','seats','automatic','sort'].forEach(id=>$('#'+id).addEventListener(id==='budget'?'input':'change',render));$('#reset').onclick=()=>{category='All';$('#budget').value=3000;$('#modelSearch').value='';$('#seats').checked=false;$('#automatic').checked=true;$('#sort').value='recommended';document.querySelectorAll('[data-category]').forEach(b=>b.classList.toggle('selected',b.dataset.category==='All'));render();};
 function toast(message){$('#toast').textContent=message;$('#toast').classList.add('show');setTimeout(()=>$('#toast').classList.remove('show'),3500);}
 $('#search').onsubmit=e=>{e.preventDefault();if($('#return').value<=$('#pickup').value){toast('Return date must be after pick-up.');return;}render();$('#fleet').scrollIntoView({behavior:'smooth'});toast(`Showing cars for ${days()} days · ${$('#location').value}`);};
 const modal=$('#modal');$('.close').onclick=()=>modal.close();modal.addEventListener('click',e=>{if(e.target===modal&&e.clientX<modal.getBoundingClientRect().left||e.target===modal&&e.clientX>modal.getBoundingClientRect().right)modal.close();});

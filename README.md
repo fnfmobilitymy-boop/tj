@@ -20,3 +20,9 @@ This is a frontend demo. Bookings are stored only in this browser's localStorage
 Push these files, including `.github/workflows/pages.yml`, to the `main` branch of `fnfmobilitymy-boop/tj`. In repository Settings → Pages → Build and deployment, select GitHub Actions. Run the Deploy website to GitHub Pages workflow or push a new commit. After a successful deployment, the expected URL is https://fnfmobilitymy-boop.github.io/tj/ (unless the account or repository has a custom Pages domain). This URL is not live until deployment succeeds.
 
 Static asset paths are relative so the site works under `/tj/`. The workflow uploads only public website files. Contact links temporarily point to the existing official website; phone, exact address, email and a precise map remain pending because access to the official website is blocked by the environment proxy.
+
+## Brand catalogue
+
+`fleet-data.js` contains 27 brands and 118 illustrative Malaysian-market models. Clicking a brand opens its filtered collection; vehicle type, budget, seats, model search and sorting refine it. Brand URLs use `?brand=bmw`, for example. These entries and prices are samples, not evidence of available rental stock. Manufacturer emblems identify brands, while real vehicle photography remains pending. `assets/brands/SOURCE.txt` records emblem provenance.
+
+`npm run build` creates `_site` with content-hashed CSS and JavaScript to prevent stale asset mixing on Pages. The deployment workflow uses this output.
